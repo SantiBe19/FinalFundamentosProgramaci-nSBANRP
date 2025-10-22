@@ -24,9 +24,16 @@
                * resumen de servicios de todos los vehículos (todos los vehículos y todos los servicios)
                * salir de este menú
              *Salir del programa    - Niko */
+
+        public static string[,] listaVehiculos;
         static void Main(string[] args)
         {
-            string[,] listaVehiculos = CrearMatriz();
+            listaVehiculos = CrearMatriz();
+            MenuPrincipal();
+        }
+
+        static void MenuPrincipal()
+        {
             Console.WriteLine("[Menú principal]");
             Console.WriteLine("Elija una opción");
             Console.WriteLine("\n1. Gestión de vehículos" + "\n2. Gestión de clientes" + "\n3. Gestión de servicios" + "\n4. Salir del programa");
@@ -46,7 +53,7 @@
         static void GestionDeVehiculos(string[,] listaVehiculos)
         {
             Console.WriteLine($"Escoge una opción \n1. Registro \n2. Ver Lista de Vehículos");
-            switch (Console.ReadLine())
+            switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1:
                     listaVehiculos = Registro(listaVehiculos); break;
@@ -72,7 +79,7 @@
             Console.WriteLine("Ingresa el año de tu carro");
             string año = ObtenerString();
 
-            for (int i = 0; i < matriz.Length(0); i++)
+            for (int i = 0; i < matriz.GetLength(0); i++)
             {
                 if (matriz[i,0] == null)
                 {
@@ -81,7 +88,7 @@
                 else
                     continue;
             }
-            for (int i = 0; i < matriz.Length(0); i++)
+            for (int i = 0; i < matriz.GetLength(0); i++)
             {
                 if (matriz[i, 1] == null)
                 {
@@ -90,7 +97,7 @@
                 else
                     continue;
             }
-            for (int i = 0; i < matriz.Length(0); i++)
+            for (int i = 0; i < matriz.GetLength(0); i++)
             {
                 if (matriz[i, 2] == null)
                 {
@@ -99,7 +106,7 @@
                 else
                     continue;
             }
-            for (int i = 0; i < matriz.Length(0); i++)
+            for (int i = 0; i < matriz.GetLength(0); i++)
             {
                 if (matriz[i, 3] == null)
                 {
@@ -114,9 +121,9 @@
 
         static void MostrarMatriz(string[,] matriz)
         {
-            for(int i = 0; i<matriz.Length(0); i++)
+            for(int i = 0; i<matriz.GetLength(0); i++)
             {
-                for (int j = 0; j < matriz.Length(1); j++)
+                for (int j = 0; j < matriz.GetLength(1); j++)
                 {
                     Console.Write(matriz[i, j]);
                 }
@@ -127,11 +134,13 @@
         static string ObtenerString()
         {
             string palabra = Console.ReadLine();
+            return palabra;
         }
 
         static int ObtenerNumero()
         {
             int numero = int.Parse(Console.ReadLine());
+            return numero;
         }
 
        static void SalirDelPrograma()
