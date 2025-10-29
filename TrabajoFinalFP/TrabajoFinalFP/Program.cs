@@ -1,4 +1,9 @@
-﻿namespace TrabajoFinalFP
+﻿using System.Diagnostics;
+using System.Numerics;
+using System.Reflection;
+using System.Text.RegularExpressions;
+
+namespace TrabajoFinalFP
 {
     internal class Program
     {
@@ -53,7 +58,7 @@
 
                 //case 2: GestionDeClientes(); break;
 
-                //case 3: GestionDeServicios(); break;
+                case 3: GestionDeServicios(); break;
 
                 case 4: salir = true; break;
             }
@@ -133,7 +138,7 @@
         }
 
         // Gestión de Servicios ===================================================
-        public void GestionDeServicios(string[,] listaVehiculos)
+        static void GestionDeServicios()
         {
             Console.WriteLine("[Gestion de servicios]");
             Console.WriteLine("Escoja una de las siguientes opciones: \n1. Registro de servicios \n2. Historial de servicios \n3. Resumen de servicios \n4. Menu Principal");
@@ -142,26 +147,85 @@
                 case 1: RegistroServicio(); break;
             }
         }
-        public void RegistroServicio()
+        static void RegistroServicio()
         {
             ObtenerPlacas();
+            string placaElegida = "";
             Console.WriteLine("Selecciona el vehículo al que quieres registrarle un servicio (1-20)");
             int vehiculoElegido = ElegirVehiculo();
+            for (int i = 0; i < listaPlacas.Length; i++)
+            {
+                if (vehiculoElegido - 1 == i)
+                {
+                    placaElegida = listaPlacas[i];
+                }
+            }
+
+            int numDeServicios = 0;
+            for (int i = 0; i < listaServicios.GetLength(0); i++)
+            {
+                if (listaServicios[i, 0] == placaElegida)
+                    numDeServicios++;
+
+            }
+
+            if (numDeServicios == 5)
+            {
+                Console.WriteLine("Máximo de servicios alcanzado para el vehículo de placa" + placaElegida);
+                return;
+            }
+
+            // Si todavía se pueden añadir servicios...
             Console.WriteLine("Ingresa el nombre del servicio a registrar");
             string servicioElegido = ObtenerString();
             Console.WriteLine("Ingresa la fecha en la que se está registrando el servicio");
             string fecha = ObtenerString();
             Console.WriteLine("Ingresa el precio del servicio elegido");
             string precio = ObtenerString();
-            for (int i = 0; i < listaPlacas.Length; i++)
+
+            // Columnas: 0. Placa | 1. Servicio |  2. Fecha | 3. Precio
+            for (int i = 0; i < listaServicios.GetLength(0); i++)
             {
-                if (vehiculoElegido - 1 == i)
+                if (listaServicios[i, 0] == null)
                 {
-                    string placaElegida = listaPlacas[i];
+                    listaServicios[i, 0] = placaElegida;
+                    break;
                 }
+                else
+                    continue;
+            }
+            for (int i = 0; i < listaServicios.GetLength(0); i++)
+            {
+                if (listaServicios[i, 1] == null)
+                {
+                    listaServicios[i, 1] = servicioElegido;
+                    break;
+                }
+                else
+                    continue;
+            }
+            for (int i = 0; i < listaServicios.GetLength(0); i++)
+            {
+                if (listaServicios[i, 2] == null)
+                {
+                    listaServicios[i, 2] = fecha;
+                    break;
+                }
+                else
+                    continue;
+            }
+            for (int i = 0; i < listaServicios.GetLength(0); i++)
+            {
+                if (listaServicios[i, 3] == null)
+                {
+                    listaServicios[i, 3] = precio;
+                    break;
+                }
+                else
+                    continue;
             }
         }
-        public void ObtenerPlacas()
+        static void ObtenerPlacas()
         {
             if (listaVehiculos == null)
             {
@@ -172,35 +236,16 @@
             for (int i = 0; i < listaVehiculos.GetLength(0); i++)
             {
                 listaPlacas[i] = listaVehiculos[i, 0];
-                Console.WriteLine($"{i + 1} {listaPlacas[i]}");
-            }
-        }
-
-        static void GenerarMatrizServicios(string placa, string servicio, string fecha, string precio)
-        {
-            for (int i = 0; i < listaPlacas.Length; i++)
-            {
-                for (int j  = 0; j < 4; j++)
-                {
-                    //listaServicios()
-                }
+                Console.Write($"{i + 1}, {listaPlacas[i]}");
             }
         }
         static int ElegirVehiculo()
         {
-            int rta = Convert.ToInt32(Console.ReadLine);
+            string rta;
             bool rtaValida = false;
-            while (!rtaValida)
-            {
-                if (0 < rta && rta <= 20)
-                {
-                    rtaValida = true;
-                    rta = Convert.ToInt32(Console.ReadLine);
-                }
-                else
-                    Console.WriteLine("Por favor ingresa un valor válido");
-            }
-            return rta;
+            Console.WriteLine("Ingresa el número del vehículo que quieres registrar");
+            rta = Console.ReadLine();
+            return Convert.ToInt32(rta);
         }
         // Matriz ==================================================================
         static void MostrarMatriz(string[,] matriz)
