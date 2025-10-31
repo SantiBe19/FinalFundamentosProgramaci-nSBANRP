@@ -38,6 +38,7 @@ namespace TrabajoFinalFP
         static void Main(string[] args)
         {
             listaVehiculos = CrearMatriz();
+            listaClientes = CrearMatrizClientes();
             while (!salir)
             {
                 MenuPrincipal();
@@ -56,7 +57,7 @@ namespace TrabajoFinalFP
             {
                 case 1: GestionDeVehiculos(listaVehiculos); break;
 
-                //case 2: GestionDeClientes(); break;
+                case 2: GestionDeClientes(); break;
 
                 case 3: GestionDeServicios(); break;
 
@@ -67,74 +68,276 @@ namespace TrabajoFinalFP
         // Gestión de Vehículos ===================================================
         static void GestionDeVehiculos(string[,] listaVehiculos)
         {
-            Console.WriteLine($"Escoge una opción \n1. Registro \n2. Ver Lista de Vehículos");
-            int rta = Convert.ToInt32(Console.ReadLine());
-            switch (rta)
+            bool salirvehiculos = false;
+            while (!salirvehiculos)
             {
-                case 0:
-                    Console.WriteLine("Ingresa una respuesta válida"); break;
-                case 1:
-                    listaVehiculos = Registro(listaVehiculos); break;
-                case 2: 
-                    MostrarMatriz(listaVehiculos); break;
+                Console.WriteLine("[Gestión de vehículos]");
+                Console.WriteLine($"Escoge una opción \n1. Registro de vehículos \n2. Ver Lista de Vehículos \n3. Editar información de vehículo \n4. Asignar vehículo a un cliente \n5. Ver vehículos asignados a un cliente \n6. Menú principal");
+                int rta = Convert.ToInt32(Console.ReadLine());
+                switch (rta)
+                {
+                    case 0:
+                        Console.WriteLine("Ingresa una respuesta válida"); break;
+                    case 1:
+                        listaVehiculos = Registro(listaVehiculos); break;
+                    case 2:
+                        MostrarMatriz(listaVehiculos); break;
+                    case 3:
+                        EditarInfo(listaVehiculos); break;
+                    case 4:
+                        listaVehiculos = AsignarVehiculo(listaVehiculos); break;
+                    case 5:
+                        VerVehiculosCliente(listaVehiculos); break;
+                    case 6:
+                        salirvehiculos = true; break;
+                    default:
+                        Console.WriteLine("Opción inválida."); break;
+                }
+                LimpiarConsola();
             }
-            LimpiarConsola();
         }
         static string[,] Registro(string[,] matriz)
         {
-            Console.WriteLine("Ingresa la placa porfa");
+            Console.WriteLine("Ingresa la placa");
             string placa = ObtenerString();
-            Console.WriteLine("Ingresa el modelo de tu carro plis");
+            Console.WriteLine("Ingresa el modelo del carro");
             string modelo = ObtenerString();
-            Console.WriteLine("Ingresa la marca de tu carro");
+            Console.WriteLine("Ingresa la marca del carro");
             string marca = ObtenerString();
-            Console.WriteLine("Ingresa el año de tu carro");
+            Console.WriteLine("Ingresa el año del carro");
             string año = ObtenerString();
             
             // Columnas: 0. Placa | 1. Modelo |  2. Marca | 3. Año
             for (int i = 0; i < matriz.GetLength(0); i++)
             {
-                if (matriz[i,0] == null)
+                if (matriz[i, 0] == null)
                 {
                     matriz[i, 0] = placa;
-                    break;
-                }
-                else
-                    continue;
-            }
-            for (int i = 0; i < matriz.GetLength(0); i++)
-            {
-                if (matriz[i, 1] == null)
-                {
                     matriz[i, 1] = modelo;
-                    break;
-                }
-                else
-                    continue;
-            }
-            for (int i = 0; i < matriz.GetLength(0); i++)
-            {
-                if (matriz[i, 2] == null)
-                {
                     matriz[i, 2] = marca;
-                    break;
-                }
-                else
-                    continue;
-            }
-            for (int i = 0; i < matriz.GetLength(0); i++)
-            {
-                if (matriz[i, 3] == null)
-                {
                     matriz[i, 3] = año;
-                    break;
+                    Console.WriteLine("Vehículo registrado correctamente.");
+                    Console.ReadKey();
+                    return matriz;
                 }
-                else
-                    continue;
             }
 
-            LimpiarConsola();
+            Console.WriteLine("No se pueden registrar más vehículos (límite alcanzado).");
+            Console.ReadKey();
             return matriz;
+        }
+
+        static void EditarInfo(string[,] matriz)
+        {
+            Console.WriteLine("Ingrese la placa del vehículo a editar:");
+            string placaBuscar = ObtenerString();
+
+            for (int i = 0; i < matriz.GetLength(0); i++)
+            {
+                if (matriz[i, 0] == placaBuscar)
+                {
+                    Console.WriteLine($"Editando vehículo con placa: {placaBuscar}");
+                    Console.WriteLine($"Modelo actual: {matriz[i, 1]}, nuevo modelo:");
+                    string nuevoModelo = ObtenerString();
+                    matriz[i, 1] = nuevoModelo;
+
+                    Console.WriteLine($"Marca actual: {matriz[i, 2]}, nueva marca:");
+                    string nuevaMarca = ObtenerString();
+                    matriz[i, 2] = nuevaMarca;
+
+                    Console.WriteLine($"Año actual: {matriz[i, 3]}, nuevo año:");
+                    string nuevoAño = ObtenerString();
+                    matriz[i, 3] = nuevoAño;
+
+                    Console.WriteLine("Vehículo actualizado correctamente.");
+                    Console.ReadKey();
+                    return;
+                }
+            }
+            Console.WriteLine("No se encontró un vehículo con esa placa.");
+            Console.ReadKey();
+        }
+
+        static void AsignarVehiculo(string[,] matriz)
+        {
+            Console.WriteLine("Ingrese la placa del vehículo a asignar:");
+            string placa = ObtenerString();
+            int indice = -1;
+
+            for (int i = 0; i < matriz.GetLength(0); i++)
+            {
+                if(matriz[i, 0] == placa)
+                {
+                    indice = i;
+                    break;
+                }
+            }
+
+            if (indice ==-1)
+            {
+                Console.WriteLine("Vehículo no encontrado.");
+                Console.ReadKey();
+                return;
+            }
+
+            string cedula;
+            do
+            {
+                Console.WriteLine("Ingrese la cédula del cliente a asignar:");
+                cedula = ObtenerString();
+                if(!ClienteExiste(cedula))
+                {
+                    Console.WriteLine("No existe un cliente con esa cédula. Intente de nuevo");
+                }
+            }while (!ClienteExiste(cedula));
+
+            if (matriz.GetLength(1) < 5)
+            {
+                matriz = ExpandirMatriz(matriz, 5);
+            }
+
+            matriz[indice, 4] = cedula;
+            Console.WriteLine($"Vehículo con placa {placa} asignado al cliente {cedula}.");
+            Console.ReadKey();
+            return matriz;
+        }
+
+        static void VerVehiculosCliente(string[,] matriz)
+        {
+            Console.WriteLine("Ingrese la cédula del cliente:");
+            string cedula = ObtenerString();
+
+            bool encontrado = false;
+            for (int i = 0; i < matriz.GetLength(0); i++)
+            {
+                if (matriz[i,4] == cedula)
+                {
+                    Console.WriteLine($"Placa: {matriz[i,0]}, Modelo: {matriz[i,1]}, Marca: {matriz[i,2]}, Año: {matriz[i,3]}");
+                    encontrado = true;
+                }
+            }
+
+            if(!encontrado)
+            {
+                Console.WriteLine("Este cliente no tiene vehículos asignados.");
+            }
+            Console.WriteLine("Presione una tecla para continuar");
+            Console.ReadKey();
+        }
+
+        // Gestión de Clientes  ===================================================
+        static void GestionDeClientes()
+        {
+            bool salirClientes = false;
+
+            while (!salirClientes)
+            {
+                Console.WriteLine("[Gestión de clientes]");
+                Console.WriteLine("Escoja una de las siguientes opciones: \n1. Registro de clientes \n2. Ver lista de clientes \n3. Editar información \n4.Menú principal");
+                switch (Convert.ToInt32(Console.ReadLine()))
+                {
+                    case 1:
+                        listaClientes = RegistroCliente(listaClientes); break;
+                    case 2:
+                        MostrarMatriz(listaClientes); break;
+                    case 3:
+                        EditarCliente(listaClientes); break;
+                    case 4:
+                        salirClientes = true; break;
+                    default:
+                        Console.WriteLine("Opción inválida."); break;
+                }
+                LimpiarConsola();
+            }
+        }
+
+        static string[,] RegistroCliente(string[,] matriz)
+        {
+            if (matriz == null)
+                matriz = CrearMatrizClientes();
+
+            Console.WriteLine("Ingrese el nombre del cliente:");
+            string nombre = ObtenerString();
+            Console.WriteLine("Ingrese la cédula del cliente:");
+            string cedula = ObtenerString();
+            Console.WriteLine("Ingrese el teléfono del cliente:");
+            string telefono = ObtenerString();
+
+            for (int i = 0;i < matriz.GetLength(0);i++)
+            {
+                if(matriz[i,1] == cedula)
+                {
+                    Console.WriteLine("Ya existe un cliente con esa cédula.");
+                    Console.ReadKey();
+                    return matriz;
+                }
+            }
+
+            for (int i = 0; i<matriz.GetLength(0); i++)
+            {
+                if (matriz[i,0] == null)
+                {
+                    matriz[i,0] = nombre;
+                    matriz[i,1] = cedula;
+                    matriz[i,2] = telefono;
+                    Console.WriteLine("Cliente registrado correctamente.");
+                    Console.ReadKey();
+                    return matriz;
+                }
+            }
+
+            Console.WriteLine("No se pueden registrar más clientes (límite alcanzado)");
+            Console.ReadKey();
+            return matriz;
+        }
+
+        static void EditarCliente(string[,] matriz)
+        {
+            if(matriz==null)
+            {
+                Console.WriteLine("no hay clientes registrads aún");
+                Console.ReadKey();
+                return;
+            }
+
+            Console.WriteLine("Ingrese la cédula del cliente que desea editar:");
+            string cedula = ObtenerString();
+
+            for (int i= 0; i < matriz.GetLength(0); i++)
+            {
+                if (matriz[i,1] ==cedula)
+                {
+                    Console.WriteLine($"Editando cliente con cédula: {cedula}");
+                    Console.WriteLine($"Nombre actual: {matriz[i, 0]}, nuevo nombre:");
+                    string nuevoNombre = ObtenerString();
+                    matriz[i, 0] = nuevoNombre;
+
+                    Console.WriteLine($"Teléfono actual: {matriz[i, 2]}, nuevo teléfono:");
+                    string nuevoTelefono = ObtenerString();
+                    matriz[i, 2] = nuevoTelefono;
+
+                    Console.WriteLine("Cliente actualizado correctamente.");
+                    Console.ReadKey();
+                    return;
+                }
+            }
+
+            Console.WriteLine("No se encontró un cliente con esa cédula");
+            Console.ReadKey();
+        }
+
+        static bool ClienteExiste(string cedula)
+        {
+            if (listaClientes == null)
+                return false;
+
+            for (int i = 0; i < listaClientes.GetLength(0); i++)
+            {
+                if (listaClientes[i, 1] == cedula)
+                    return true;
+            }
+
+            return false;
         }
 
         // Gestión de Servicios ===================================================
@@ -258,7 +461,7 @@ namespace TrabajoFinalFP
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("Presione cualquier tecla para continuar...");
+            Console.WriteLine("Presione cualquier tecla para continuar.");
             Console.ReadKey();
             LimpiarConsola();
         }
@@ -266,6 +469,28 @@ namespace TrabajoFinalFP
         {
             string[,] Registro = new string[20,4];
             return Registro;
+        }
+
+        static string[,] CrearMatrizClientes()
+        {
+            string[,] clientes = new string[15, 3];
+            return clientes;
+        }
+        static string[,] ExpandirMatriz(string[,] original, int nuevasColumnas)
+        {
+            int filas = original.GetLength(0);
+            int columnasActuales = original.GetLength(1);
+            string[,] nuevaMatriz = new string[filas, nuevasColumnas];
+
+            for (int i = 0; i < filas; i++)
+            {
+                for (int j = 0; j < columnasActuales; j++)
+                {
+                    nuevaMatriz[i, j] = original[i, j];
+                }
+            }
+
+            return nuevaMatriz;
         }
 
         // Obtención de valores ===================================================
