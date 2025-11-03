@@ -31,9 +31,17 @@ namespace TrabajoFinalFP
              *Salir del programa    - Niko */
 
         public static string[,] listaVehiculos;
+        static int numVehiculos;
         public static string[] listaPlacas = new string[20];
         public static string[,] listaClientes;
+
+        // Servicios
         public static string[,] listaServicios;
+        public static int[] numServiciosPorVehiculo = new int[20];
+        static string[,] nombresServicios = new string[20, 5];
+        static string[,] fechasServicios = new string[20, 5];
+        static float[,] costosServicios = new float[20, 5];
+
         public static bool salir = false;
         static void Main(string[] args)
         {
@@ -49,6 +57,7 @@ namespace TrabajoFinalFP
 
         static void MenuPrincipal()
         {
+            LimpiarConsola();
             Console.WriteLine("[Menú principal]");
             Console.WriteLine("Elija una opción");
             Console.WriteLine("\n1. Gestión de vehículos" + "\n2. Gestión de clientes" + "\n3. Gestión de servicios" + "\n4. Salir del programa");
@@ -117,6 +126,7 @@ namespace TrabajoFinalFP
                     matriz[i, 1] = modelo;
                     matriz[i, 2] = marca;
                     matriz[i, 3] = año;
+                    numVehiculos++;
                     Console.WriteLine("Vehículo registrado correctamente.");
                     Console.ReadKey();
                     return matriz;
@@ -409,115 +419,139 @@ namespace TrabajoFinalFP
             return false;
         }
 
-        // Gestión de Servicios ===================================================
+        // Gestión de Servicios ========================================================================================================
         static void GestionDeServicios()
         {
+            LimpiarConsola();
             Console.WriteLine("[Gestion de servicios]");
             Console.WriteLine("Escoja una de las siguientes opciones: \n1. Registro de servicios \n2. Historial de servicios \n3. Resumen de servicios \n4. Menu Principal");
             switch (Convert.ToInt32(Console.ReadLine()))
             {
                 case 1: RegistroServicio(); break;
+                case 2: HistorialServicios(); break;
+                case 3: MostrarResumen(); break;
+                case 4: MenuPrincipal(); break;
             }
         }
         static void RegistroServicio()
         {
             ObtenerPlacas();
-            string placaElegida = "";
-            Console.WriteLine("Selecciona el vehículo al que quieres registrarle un servicio (1-20)");
-            int vehiculoElegido = ElegirVehiculo();
-            for (int i = 0; i < listaPlacas.Length; i++)
+            Console.WriteLine("Escribe la placa del vehículo para el que quieres registrar un servicio");
+            string placa = Console.ReadLine();
+            int index = BuscarVehiculo(placa);
+            if (index == -1)
             {
-                if (vehiculoElegido - 1 == i)
-                {
-                    placaElegida = listaPlacas[i];
-                }
-            }
-
-            int numDeServicios = 0;
-            for (int i = 0; i < listaServicios.GetLength(0); i++)
-            {
-                if (listaServicios[i, 0] == placaElegida)
-                    numDeServicios++;
-
-            }
-
-            if (numDeServicios == 5)
-            {
-                Console.WriteLine("Máximo de servicios alcanzado para el vehículo de placa" + placaElegida);
+                Console.WriteLine("Vehículo no encontrado.");
                 return;
             }
 
-            // Si todavía se pueden añadir servicios...
-            Console.WriteLine("Ingresa el nombre del servicio a registrar");
-            string servicioElegido = ObtenerString();
-            Console.WriteLine("Ingresa la fecha en la que se está registrando el servicio");
-            string fecha = ObtenerString();
-            Console.WriteLine("Ingresa el precio del servicio elegido");
-            string precio = ObtenerString();
+            if (numServiciosPorVehiculo[index] >= 5)
+            {
+                Console.WriteLine("Este vehículo ya tiene el máximo de 5 servicios registrados.");
+                return;
+            }
 
-            // Columnas: 0. Placa | 1. Servicio |  2. Fecha | 3. Precio
-            for (int i = 0; i < listaServicios.GetLength(0); i++)
+            int n = numServiciosPorVehiculo[index];
+
+            Console.Write("Nombre del servicio: ");
+            nombresServicios[index, n] = Console.ReadLine();
+
+            Console.Write("Fecha (dd/mm/aaaa): ");
+            fechasServicios[index, n] = Console.ReadLine();
+
+            Console.Write("Costo: ");
+            costosServicios[index, n] = float.Parse(Console.ReadLine());
+
+            numServiciosPorVehiculo[index]++;
+
+            Console.WriteLine("Servicio registrado con éxito. Presiona cualquier tecla para continuar.");
+            Console.ReadKey();
+            GestionDeServicios();
+        }
+
+        static void HistorialServicios()
+        {
+            ObtenerPlacas();
+            Console.WriteLine("Escribe la placa del vehículo del que quieres ver el historial");
+            string placa = Console.ReadLine();
+            int index = BuscarVehiculo(placa);
+            if (index == -1)
             {
-                if (listaServicios[i, 0] == null)
-                {
-                    listaServicios[i, 0] = placaElegida;
-                    break;
-                }
-                else
-                    continue;
+                Console.WriteLine("Vehículo no encontrado.");
+                return;
             }
-            for (int i = 0; i < listaServicios.GetLength(0); i++)
+
+            if (numServiciosPorVehiculo[index] == 0)
             {
-                if (listaServicios[i, 1] == null)
-                {
-                    listaServicios[i, 1] = servicioElegido;
-                    break;
-                }
-                else
-                    continue;
+                Console.WriteLine(listaVehiculos[index, 0] + " No tiene servicios registrados.");
+                return;
             }
-            for (int i = 0; i < listaServicios.GetLength(0); i++)
+
+            Console.WriteLine($"Historial de servicios para {listaVehiculos[index, 0]}");
+
+            for (int i = 0; i < numServiciosPorVehiculo[index]; i++)
             {
-                if (listaServicios[i, 2] == null)
-                {
-                    listaServicios[i, 2] = fecha;
-                    break;
-                }
-                else
-                    continue;
+                Console.WriteLine($"  Servicio {i + 1}: {nombresServicios[index, i]}");
+                Console.WriteLine($"    Fecha: {fechasServicios[index, i]}");
+                Console.WriteLine($"    Costo: ${costosServicios[index, i]}");
             }
-            for (int i = 0; i < listaServicios.GetLength(0); i++)
+
+            Console.WriteLine("Presiona cualquier tecla para volver al menú de servicios.");
+            Console.ReadKey();
+            GestionDeServicios();
+        }
+
+        static void MostrarResumen()
+        {
+            if (numVehiculos == 0)
             {
-                if (listaServicios[i, 3] == null)
-                {
-                    listaServicios[i, 3] = precio;
-                    break;
-                }
-                else
-                    continue;
+                Console.WriteLine("No hay vehículos registrados.");
+                return;
             }
+
+            for (int i = 0; i < numVehiculos; i++)
+            {
+                Console.WriteLine($"\nVehículo {i + 1}: {listaVehiculos[i, 0]} - {listaVehiculos[i, 1]} {listaVehiculos[i, 2]} ({listaVehiculos[i, 3]})");
+
+                if (numServiciosPorVehiculo[i] == 0)
+                {
+                    Console.WriteLine("  Sin servicios.");
+                    continue;
+                }
+
+                for (int j = 0; j < numServiciosPorVehiculo[i]; j++)
+                {
+                    Console.WriteLine($"  - {nombresServicios[i, j]} | {fechasServicios[i, j]} | ${costosServicios[i, j]}");
+                }
+            }
+
+            Console.WriteLine("Presiona cualquier tecla para volver al menú de servicios.");
+            Console.ReadKey();
+            GestionDeServicios();
         }
         static void ObtenerPlacas()
         {
-            if (listaVehiculos == null)
+            if (numVehiculos == 0)
             {
-                Console.WriteLine("Error: La lista de vehículos está vacía");
+                Console.WriteLine("No hay vehículos registrados.");
                 return;
             }
 
-            for (int i = 0; i < listaVehiculos.GetLength(0); i++)
+            Console.WriteLine("Vehículos actualmente registrados: ");
+            for (int i = 0; i < numVehiculos; i++)
             {
                 listaPlacas[i] = listaVehiculos[i, 0];
-                Console.Write($"{i + 1}, {listaPlacas[i]}");
+                Console.WriteLine($"{i + 1}, {listaPlacas[i]}");
             }
         }
-        static int ElegirVehiculo()
+        static int BuscarVehiculo(string placa)
         {
-            string rta;
-            bool rtaValida = false;
-            Console.WriteLine("Ingresa el número del vehículo que quieres registrar");
-            rta = Console.ReadLine();
-            return Convert.ToInt32(rta);
+            for (int i = 0; i < numVehiculos; i++)
+            {
+                if (listaVehiculos[i, 0] == placa)
+                    return i;
+            }
+            return -1;
         }
         // Matriz ==================================================================
         static void MostrarMatriz(string[,] matriz)
