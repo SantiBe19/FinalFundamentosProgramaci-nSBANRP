@@ -110,6 +110,17 @@ namespace TrabajoFinalFP
             Console.WriteLine("[Registro de clientes]");
             Console.WriteLine("Ingresa la placa");
             string placa = ObtenerString();
+                
+                for (int i = 0; i < matriz.GetLength(0); i++)
+                {
+                    if (matriz[i,0] == placa)
+                    {
+                        Console.WriteLine("Ya existe un vehículo con esa placa.");
+                        Console.ReadKey();
+                        return matriz;
+                    }
+                }
+
             Console.WriteLine("Ingresa el modelo del carro");
             string modelo = ObtenerString();
             Console.WriteLine("Ingresa la marca del carro");
@@ -123,6 +134,7 @@ namespace TrabajoFinalFP
                 if (matriz[i, 0] == null)
                 {
                     matriz[i, 0] = placa;
+
                     matriz[i, 1] = modelo;
                     matriz[i, 2] = marca;
                     matriz[i, 3] = año;
@@ -174,7 +186,7 @@ namespace TrabajoFinalFP
         static string[,] AsignarVehiculo(string[,] matriz)
         {
             LimpiarConsola();
-            Console.WriteLine("[Asignarle un vehículo a un cliente]");
+            Console.WriteLine("[Asignar un vehículo a un cliente]");
             bool hayClientes = false;
             if(listaClientes != null)
             {

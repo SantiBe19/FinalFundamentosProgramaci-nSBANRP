@@ -28,3 +28,18 @@ C:\Users\nicoe\OneDrive\Documents\Universidad\Semestre 2\Programación\TrabajoFi
 C:\Users\nicoe\OneDrive\Documents\Universidad\Semestre 2\Programación\TrabajoFinal\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.pdb
 C:\Users\nicoe\OneDrive\Documents\Universidad\Semestre 2\Programación\TrabajoFinal\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.genruntimeconfig.cache
 C:\Users\nicoe\OneDrive\Documents\Universidad\Semestre 2\Programación\TrabajoFinal\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\ref\TrabajoFinalFP.dll
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\bin\Debug\net8.0\TrabajoFinalFP.exe
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\bin\Debug\net8.0\TrabajoFinalFP.deps.json
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\bin\Debug\net8.0\TrabajoFinalFP.runtimeconfig.json
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\bin\Debug\net8.0\TrabajoFinalFP.dll
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\bin\Debug\net8.0\TrabajoFinalFP.pdb
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.AssemblyInfoInputs.cache
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.AssemblyInfo.cs
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.csproj.CoreCompileInputs.cache
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.sourcelink.json
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.dll
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\refint\TrabajoFinalFP.dll
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.pdb
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\TrabajoFinalFP.genruntimeconfig.cache
+C:\Users\B15S201est\Documents\FinalFundamentosProgramaci-nSBANRP\TrabajoFinalFP\TrabajoFinalFP\obj\Debug\net8.0\ref\TrabajoFinalFP.dll
